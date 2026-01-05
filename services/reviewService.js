@@ -17,6 +17,12 @@ if (typeof openai !== "function") {
 }
 
 const processReview = async (review, weighted = false, userRating = null) => {
+
+
+  if (!review.text) {
+    return null;
+  }
+  
   try {
     // Validate API key is set
     if (!process.env.OPENAI_API_KEY) {
@@ -39,6 +45,17 @@ const processReview = async (review, weighted = false, userRating = null) => {
 2. The perceived sentiment as a number from 1-5 (1 = very negative, 5 = very positive)
 
 Review text: "${review.text}"
+
+GUIDELINES:
+- Keep the item names concise and specific. DO NOT mention more than one item in the item name.
+- If a review mentions multiple items, return the most specific item, especially one that they specifically mentioned. 
+- Use names as would appear on a restaurant menu.
+- Do not use generic names like "korean food" or "sandwich".
+
+Example:
+Review text: "I had the chicken parmesan and the spaghetti with meatballs. The chicken parmesan was great, but the spaghetti with meatballs was not as good."
+Output: { item: "chicken parmesan", rating: 5 }
+
 
 Extract the food item name if mentioned, and determine the sentiment rating based on the review text. Only return an object if a food item is mentioned.`,
       schema: z.object({

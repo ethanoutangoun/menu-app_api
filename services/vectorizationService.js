@@ -222,6 +222,7 @@ if (!process.env.OPENAI_API_KEY) {
   function mergeClustersByRepSimilarity(clusters) {
     // clusters: [{ rep, rep_embedding, indices }]
     // union-find
+    console.log('clusters', clusters);  
     const parent = clusters.map((_, i) => i);
   
     function find(x) {
@@ -290,6 +291,7 @@ if (!process.env.OPENAI_API_KEY) {
     }
   
     const itemsRaw = rows.map((r) => r.item_raw);
+    console.log('itemsRaw', itemsRaw);  
     const embeddings = await getEmbeddings(itemsRaw);
   
     if (embeddings.length !== rows.length) {
@@ -348,7 +350,7 @@ if (!process.env.OPENAI_API_KEY) {
   
     out.sort((a, b) => b.rating - a.rating);
   
-    return [{ category: "Menu Items", items: out }];
+    return [{ category: "Items", items: out }];
   }
   
   module.exports = {
